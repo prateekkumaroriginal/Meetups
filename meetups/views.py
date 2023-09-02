@@ -28,8 +28,8 @@ class IndexView(View):
 class MeetupDetailView(DetailView):
     def get(self, request, meetup_slug):
         selected_meetup = {
-            'title': 'A first Meetup',
-            'description': 'This is the first meetup of our group'
+            'title': 'A dummy Meetup',
+            'description': 'This is the dummy meetup of our dummy group'
         }
         return render(request, 'meetups/meetup_detail.html', {
             'meetup': selected_meetup

@@ -1,0 +1,24 @@
+{% load static %}
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href={% static 'meetups/base.css' %}>
+    {% block css_files %}{% endblock css_files %}
+    <title>{% block page_title %}Meetups{% endblock page_title %}</title>
+</head>
+<body>
+    <header id="main-header">
+        <nav>
+            <a href="/meetups" id="main-logo">Meetups</a>
+            <h1>{% block main_heading %}{% endblock main_heading %}</h1>
+            {% block header_content %}{% endblock header_content %}
+        </nav>
+    </header>
+    <main>
+        {% block content %}{% endblock content %}
+    </main>
+</body>
+</html>
