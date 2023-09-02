@@ -1,24 +1,14 @@
 from django.shortcuts import render
 from django.views import View
 from django.views.generic import DetailView
+from .models import Meetup
 
 # Create your views here.
 
 
 class IndexView(View):
     def get(self, request):
-        meetups = [
-            {
-                'title': 'A first Meetup',
-                'location': 'Mumbai',
-                'slug': 'a-first-meetup'
-            },
-            {
-                'title': 'Second meetup',
-                'location': 'Delhi',
-                'slug': 'second-meetup'
-            }
-        ]
+        meetups = Meetup.objects.all()
         return render(request, 'meetups/index.html', {
             'meetups': meetups,
             'show_meetups': True
@@ -27,10 +17,10 @@ class IndexView(View):
 
 class MeetupDetailView(DetailView):
     def get(self, request, meetup_slug):
-        selected_meetup = {
-            'title': 'A dummy Meetup',
-            'description': 'This is the dummy meetup of our dummy group'
-        }
+        try:
+            selected_meetup = Meetup.objects.get(slug=meetup_slug)
+        except Exception as e:
+            selected_meetup = None
         return render(request, 'meetups/meetup_detail.html', {
             'meetup': selected_meetup
         })

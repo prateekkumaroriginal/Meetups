@@ -14,7 +14,7 @@
         <ol>
             {% for meetup in meetups %}
                 <li class="meetup-item">
-                    {% include 'meetups/includes/meetup-item.html' with title=meetup.title location=meetup.location %}
+                    {% include 'meetups/includes/meetup-item.html' with title=meetup.title location=meetup.location slug=meetup.slug %}
                 </li>
             {% endfor %}
         </ol>
