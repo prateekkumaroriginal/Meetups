@@ -1,7 +1,9 @@
+from typing import Any, Optional
+from django.db import models
 from django.shortcuts import render, redirect
 from django.views import View
 from django.views.generic import DetailView, TemplateView
-from .models import Meetup
+from .models import Meetup, Participant
 from .forms import RegistrationForm
 
 # Create your views here.
@@ -35,14 +37,24 @@ class MeetupDetailView(DetailView):
         registration_form = RegistrationForm(request.POST)
         selected_meetup = Meetup.objects.get(slug=meetup_slug)
         if registration_form.is_valid():
-            participant = registration_form.save()
+            user_email = registration_form.cleaned_data['email']
+            participant, _ = Participant.objects.get_or_create(
+                email=user_email)
             selected_meetup.participants.add(participant)
-            return redirect('registration-success')
+            return redirect('registration-success', meetup_slug=meetup_slug)
 
         return render(request, 'meetups/meetup_detail.html', {
             'meetup': selected_meetup,
             'form': registration_form
         })
-        
-class RegistrationSuccessView(TemplateView):
+
+
+class RegistrationSuccessView(DetailView):
+    model = Meetup
+    slug_url_kwarg = 'meetup_slug'
     template_name = 'meetups/registration_success.html'
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context["meetup"] = self.get_object()
+        return context
